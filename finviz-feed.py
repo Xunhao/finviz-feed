@@ -5,17 +5,16 @@ import csv
 import os
 
 # Tickers
-tickers = ['AAPL', 'GOOG']
+tickers = ['AAPL', 'GOOG']  # Modify this array to include tickers that you are interested in
 
 
 def scraper(tickers):
     # Create a csv file to hold the scrapped data for all tickers
     current_directory = os.getcwd()
-    ticker_success_count = 0
+    ticker_success_count = 0  # Allows us to track the number of tickers that the script has scrapped
 
     with open(f'{current_directory}/finviz_feed.csv', 'w') as finviz_feed:
-        finviz_feed_header = ['Date Time', 'Ticker',
-                              'News Title', 'News Link', 'News Source']
+        finviz_feed_header = ['Date Time', 'Ticker', 'News Title', 'News Link', 'News Source']
         finviz_feed_data = []
         writer = csv.writer(finviz_feed)
         writer.writerow(finviz_feed_header)
@@ -35,8 +34,8 @@ def scraper(tickers):
                 soup = BeautifulSoup(finviz.content, 'html.parser')
                 news_table = soup.find('table', attrs={"id": "news-table"})
                 news_feed_count = len(news_table.find_all('tr'))
-                news_latest_date = ''
-                news_count = 0  # We can consider return this in as an output to indicate the success of the script
+                news_latest_date = ''  # Stores the latest news date for each ticker
+                news_count = 0  # Return the number of news for each ticker
 
                 for i in range(news_feed_count):
                     # The first news link of the day will always contain both date and time. Subsequent links will not have until it reaches the previous day
